@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teacher Availability</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        input[type="checkbox"], select, input[type="number"], input[type="time"], input[type="submit"] {
+            margin-top: 5px;
+            padding: 8px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+            width: 200px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .disabled {
+            background-color: #f2f2f2;
+            color: #999;
+            pointer-events: none;
+        }
+    </style>
+    <script>
+        window.addEventListener("DOMContentLoaded", function() {
+            var presenceSelect = document.getElementById("presence");
+            var slotsSelect = document.getElementById("slots");
+            var timeSlotsContainer = document.getElementById("timeSlotsContainer");
+
+            presenceSelect.addEventListener("change", function() {
+                var selectedValue = presenceSelect.value;
+                var isDisabled = selectedValue === "absent";
+
+                slotsSelect.disabled = isDisabled;
+                timeSlotsContainer.classList.toggle("disabled", isDisabled);
+
+                // Clear input fields and time slots container if switching to "Absent"
+                if (isDisabled) {
+                    slotsSelect.value = "";
+                    timeSlotsContainer.innerHTML = "";
+                }
+            });
+
+            slotsSelect.addEventListener("change", function() {
+                var slots = parseInt(slotsSelect.value);
+                timeSlotsContainer.innerHTML = "";
+
+                if (slots > 0) {
+                    for (var i = 1; i <= slots; i++) {
+                        var label = document.createElement("label");
+                        label.textContent = "Time Slot " + i + " (Start-End):";
+
+                        var startTimeInput = document.createElement("input");
+                        startTimeInput.type = "time";
+                        startTimeInput.name = "start_time_" + i;
+                        startTimeInput.min = "06:00";
+                        startTimeInput.max = "18:00";
+
+                        var endTimeInput = document.createElement("input");
+                        endTimeInput.type = "time";
+                        endTimeInput.name = "end_time_" + i;
+                        endTimeInput.min = "06:30";
+                        endTimeInput.max = "18:30";
+
+                        var studentsInput = document.createElement("input");
+                        studentsInput.type = "number";
+                        studentsInput.name = "students_" + i;
+                        studentsInput.min = "1";
+                        studentsInput.placeholder = "Number of students";
+
+                        timeSlotsContainer.appendChild(label);
+                        timeSlotsContainer.appendChild(startTimeInput);
+                        timeSlotsContainer.appendChild(endTimeInput);
+                        timeSlotsContainer.appendChild(studentsInput);
+                        timeSlotsContainer.appendChild(document.createElement("br"));
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Teacher Availability</h1>
+    <form id="availabilityForm" action="teacherContent.php" method="POST">
+        <label for="presence">Are you present today?</label>
+        <select id="presence" name="presence">
+            <option value="present">Present</option>
+            <option value="absent">Absent</option>
+        </select>
+        <br>
+        <label for="slots">Number of slots needed:</label>
+        <select id="slots" name="slots">
+            <option value="">Select</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        <br>
+        <div id="timeSlotsContainer"></div>
+        <br>
+        <input type="submit" value="Save Availability">
+    </form>
+</body>
+</html>

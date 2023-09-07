@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Button Navigation</title>
+  <style>
+    body {
+      background-color: #f1f1f1;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+
+    h1 {
+      color: #333333;
+      text-align: center;
+    }
+
+    .button {
+      display: block;
+      width: 200px;
+      height: 50px;
+      margin: 20px auto;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Select an option:</h1>
+  <button class="button" onclick="redirectTo('student')">Student</button>
+  <button class="button" onclick="redirectTo('teacher')">Teacher</button>
+
+  <script>
+    function redirectTo(option) {
+      if (option === 'student') {
+        window.location.href = 'studentLogin.html'; // Replace with the URL of the student page
+      } else if (option === 'teacher') {
+        window.location.href = 'teacherLogin.html'; // Replace with the URL of the teacher page
+      }
+    }
+  </script>
+</body>
+</html>
